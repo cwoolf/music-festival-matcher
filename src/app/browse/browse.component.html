@@ -1,0 +1,13 @@
+<form (ngSubmit)="doSubmit()" #form="ngForm">
+  <div class="layout is-flex has-islands">
+    <div class="island">
+      <h1 style="text-align: center">
+        Music Festival Matcher
+      </h1>
+      <a routerLink="/festival/add" class="btn btn--primary">
+        Add festival
+      </a>
+      <app-table></app-table>
+    </div>
+  </div>
+</form>
