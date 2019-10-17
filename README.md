@@ -22,3 +22,5 @@ Production ready AoT (Ahead-of-Time) HTML/CSS/JS files can be found in `/dist/`
 If you need to make changes to web-ui, use the Angular CLI:
 
 `ng serve`
+
+Go to `http://localhost:3000`
