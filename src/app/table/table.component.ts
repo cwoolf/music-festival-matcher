@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FestivalService, IFestival, IArtist } from '../festival/festival.service';
+import { FestivalService } from '../festival/festival.service';
+import { IFestival, IArtist } from '../shared';
 
 @Component({
   selector: 'app-table',

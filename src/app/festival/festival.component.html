@@ -4,38 +4,60 @@
       <h1 style="text-align: center">
         Music Festival Matcher
       </h1>
+      <h2>Festival info</h2>
+
       <label class="label">Festival Name</label>
       <input [(ngModel)]="festival.name" name="name" type="text" class="inputfield" placeholder="Bonnaroo"
         [disabled]="mode === 'update'">
-      <label class="label" [hidden]="artistNames.length < 1">Continent</label>
-      <input [(ngModel)]="festival.location.continent" name="continent" type="text" class="inputfield"
-        placeholder="North America" [disabled]="mode === 'update'">
-      <label class="label" [hidden]="artistNames.length < 1">Country</label>
-      <input [(ngModel)]="festival.location.country" name="country" type="text" class="inputfield"
-        placeholder="United States" [hidden]="artistNames.length < 1" [disabled]="mode === 'update'">
-      <label class="label"
-        [hidden]="artistNames.length < 1 || festival.location.country !== 'United States'">Region</label>
-      <input [(ngModel)]="festival.location.usRegion" name="usRegion" type="text" class="inputfield" placeholder="South"
-        [hidden]="artistNames.length < 1 || festival.location.country !== 'United States'"
+
+      <label class="label">Continent</label>
+      <select [(ngModel)]="festival.location.continent" class="select" name="continent" placeholder="North America"
         [disabled]="mode === 'update'">
-      <label class="label">State or Province</label>
-      <input [(ngModel)]="festival.location.state" name="state" type="text" class="inputfield" placeholder="Tennessee"
+        <option *ngFor="let continent of continents" [value]="continent">{{ continent }}</option>
+      </select>
+
+      <label class="label">Country</label>
+      <select [(ngModel)]="festival.location.country" class="select" name="country" placeholder="United States"
         [disabled]="mode === 'update'">
-      <label class="label" [hidden]="artistNames.length < 1">Ticket Price (USD)</label>
-      <input [(ngModel)]="festival.priceInDollars" name="priceInDollars" type="text" class="inputfield"
-        placeholder="350" [hidden]="artistNames.length < 1">
-      <label class="label" [hidden]="artistNames.length < 1">Type (City, Camping, or Other)</label>
-      <input [(ngModel)]="festival.type" name="type" type="text" class="inputfield" placeholder="Camping"
-        [hidden]="artistNames.length < 1" [disabled]="mode === 'update'">
-      <label class="label">Interactive Lineup URL</label>
+        <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+      </select>
+
+      <label *ngIf="festival.location.country === 'United States'" class="label">Region</label>
+      <select *ngIf="festival.location.country === 'United States'" [(ngModel)]="festival.location.usRegion"
+        class="select" name="region" placeholder="South" [disabled]="mode === 'update'">
+        <option disabled selected [ngValue]="null">&nbsp;</option>
+        <option *ngFor="let region of regions" [value]="region">{{ region }}</option>
+      </select>
+
+      <label *ngIf="festival.location.country === 'United States'" class="label">State</label>
+      <select *ngIf="festival.location.country === 'United States'" [(ngModel)]="festival.location.state" class="select"
+        name="state" placeholder="Tennessee" [disabled]="mode === 'update'">
+        <option disabled selected [ngValue]="null">&nbsp;</option>
+        <option *ngFor="let state of states" [value]="state">{{ state }}</option>
+      </select>
+
+      <label class="label">Location type</label>
+      <select [(ngModel)]="festival.location.type" class="select" name="state" placeholder="Camping"
+        [disabled]="mode === 'update'">
+        <option disabled selected [ngValue]="null">&nbsp;</option>
+        <option *ngFor="let locationType of locationTypes" [value]="locationType">{{ locationType }}</option>
+      </select>
+
+      <label class="label">General Admission Ticket Price (USD)</label>
+      <input [(ngModel)]="festival.generalAdmissionTicketPriceInDollars" name="generalAdmissionTicketPriceInDollars"
+        type="text" class="inputfield" placeholder="350">
+
+      <h2>Lineup generation</h2>
+      <p>Optional</p>
+      <label class="label">Interactive Lineup URL <span *ngIf="mode === 'update'">(<a [href]="festival.url"
+            target="_blank">View</a>)</span></label>
       <input [(ngModel)]="festival.url" name="url" type="text" class="inputfield"
-        placeholder="https://www.bonnaroo.com/lineup/interactive/" [disabled]="artistNames && artistNames.length > 0">
-      <label class="label" [hidden]="(artistNames && artistNames.length > 0) || mode === 'update'">Artist 1</label>
-      <input [(ngModel)]="artist1" name="artist1" type="text" class="inputfield" placeholder="Bob Moses"
-        [hidden]="(artistNames && artistNames.length > 0) || mode === 'update'">
-      <label class="label" [hidden]="(artistNames && artistNames.length > 0) || mode === 'update'">Artist 2</label>
-      <input [(ngModel)]="artist2" name="artist2" type="text" class="inputfield" placeholder="Tycho"
-        [hidden]="(artistNames && artistNames.length > 0) || mode === 'update'">
+        placeholder="https://www.bonnaroo.com/lineup/interactive/"
+        [disabled]="(artistNames && artistNames.length > 0) || mode === 'update'">
+      <label class="label">Artist 1</label>
+      <input [(ngModel)]="artist1" name="artist1" type="text" class="inputfield" placeholder="Bob Moses">
+      <label class="label">Artist 2</label>
+      <input [(ngModel)]=" artist2" name="artist2" type="text" class="inputfield" placeholder="Tycho">
       <a routerLink="/" type="button" class="btn btn--secondary btn--cancel">Cancel</a>
       <button *ngIf="!artistNames || artistNames.length < 1" type="button" class="btn btn--primary"
         (click)="getArtistNamesFromWebPage()"
@@ -45,9 +67,26 @@
         class="btn btn--primary" (click)="addFestival()">{{ (mode === 'add') ? 'Add' : 'Update' }}
         festival</button>
     </div>
-    <div class="island artists">
-      <input *ngFor="let artist of artistNames; let i = index; trackBy:trackByIndex;" [(ngModel)]="artistNames[i]"
-        [ngModelOptions]="{standalone: true}" type="text" class="inputfield">
+    <div class="island island-artists">
+      <h2 class="artists-title">Artists</h2>
+      <div class="add-artist-container">
+        <div>
+          <label class="label">Artist name</label>
+          <input #artistInput [(ngModel)]="newArtist" [ngModelOptions]="{standalone: true}" type="text"
+            class="inputfield">
+        </div>
+        <button class="btn btn--primary" (click)="addArtist(); artistInput.focus()"
+          [disabled]="!newArtist || newArtist.length < 1">+</button>
+      </div>
+      <div class="artists">
+        <div class="artist-container" *ngFor="let artist of artistNames; let i = index; trackBy:trackByIndex;">
+          <div>
+            <input [(ngModel)]="artistNames[i]" [ngModelOptions]="{standalone: true}" type="text" class="inputfield">
+          </div>
+          <button class="btn btn--secondary btn--error" (click)="removeArtist(i)">-</button>
+        </div>
+        <h2 *ngIf="artistNames.length === 0" style="text-align: center; color: lightgray;">None</h2>
+      </div>
     </div>
   </div>
 </form>

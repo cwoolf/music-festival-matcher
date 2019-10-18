@@ -9,7 +9,8 @@ import { FestivalService } from './festival/festival.service';
 import { FestivalComponent } from './festival/festival.component';
 import { BrowseComponent } from './browse/browse.component';
 import { TableComponent } from './table/table.component';
-import { ArtistFilterPipe } from './table/artist-filter.pipe';
+import { TablePipe } from './table/table.pipe';
+import { MapFestivalsPipe } from './shared';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ArtistFilterPipe } from './table/artist-filter.pipe';
     FestivalComponent,
     BrowseComponent,
     TableComponent,
-    ArtistFilterPipe,
+    TablePipe,
+    MapFestivalsPipe,
   ],
   imports: [
     BrowserModule,

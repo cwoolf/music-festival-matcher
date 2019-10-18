@@ -1,3 +1,15 @@
 table, label {
   margin-top: 20px;
 }
+
+.artist-column {
+  width: 60%;
+}
+
+.festivals-column {
+  width: calc(40% - 100px);
+}
+
+.must-see-column {
+  width: 100px;
+}

@@ -1,12 +1,57 @@
-.inputfield {
+.inputfield,
+.select,
+.artist-container {
   margin-bottom: 18px;
 }
 
 .artists {
-  max-height: calc(100vh - 60px);
+  margin-top: 42px;
+  max-height: calc(100vh - 100px);
   overflow: auto;
+}
+
+.island-artists {
+  margin-top: 0px;
+}
+
+@media(min-width: 871px) {
+  .island-artists {
+    margin-top: 79px;
+  }
+}
+
+.island-artists .btn {
+  font-size: 28px;
+  line-height: 21px;
 }
 
 .btn--cancel {
   margin-right: 8px;
+}
+
+.artists-title {
+  margin-top: 11px;
+}
+
+.add-artist-container,
+.artist-container {
+  display: flex;
+  align-items: flex-end;
+  padding-top: 1px;
+}
+
+.add-artist-container div,
+.artist-container div {
+  flex-shrink: 3;
+  flex-grow: 10;
+  margin-right: 8px;
+}
+
+.add-artist-container .inputfield,
+.artist-container .inputfield {
+  margin-bottom: 0;
+}
+
+.add-artist-container .btn {
+  flex-basis: content;
 }

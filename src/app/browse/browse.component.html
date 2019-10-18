@@ -4,10 +4,28 @@
       <h1 style="text-align: center">
         Music Festival Matcher
       </h1>
-      <a routerLink="/festival/add" class="btn btn--primary">
+      <a *ngIf="festivalService.bestFestivalMatches.length < 1" routerLink="/festival/add" class="btn btn--primary">
         Add festival
       </a>
-      <app-table></app-table>
+      <button *ngIf="festivalService.bestFestivalMatches.length < 1 && festivalService.mustSeeArtists.length > 0"
+        type="button" class="btn btn--primary" style="float: right;" (click)="festivalService.getBestFestivalMatches()">
+        Get best matches
+      </button>
+      <div *ngIf="festivalService.bestFestivalMatches.length > 0" style="text-align: center">
+        <br>
+        <h2>Top 3 festival matches based on your must-see artists</h2>
+        <br>
+        <div *ngFor="let festival of festivalService.bestFestivalMatches; let i = index">
+          <a [routerLink]="getFestivalLink(festival)" style="font-size: 24px">{{i + 1}}. {{ festival.name }}</a>
+          <br>
+        </div>
+        <button type="button" class="btn btn--primary"
+          (click)="festivalService.bestFestivalMatches = []; festivalService.mustSeeArtists = []"
+          style="margin-top: 30px;">
+          Done
+        </button>
+      </div>
+      <app-table *ngIf="festivalService.bestFestivalMatches.length < 1"></app-table>
     </div>
   </div>
 </form>

@@ -3,22 +3,29 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Artist</th>
-      <th>Festivals</th>
+      <th class="artist-column">Artist</th>
+      <th class="festivals-column">Festivals</th>
+      <th class="must-see-column"></th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let artist of festivalService.artists | artistFilter:text:festivalService.mustSeeArtists">
-      <td>{{ artist.name }}</td>
-      <td>
-        <span *ngFor="let festival of artist.festivals; let l = last">
-          <a [routerLink]="getFestivalLink(festival)">{{ festival.name }}<span *ngIf="!l">,</span></a>
+    <tr
+      *ngFor="let artist of festivalService.artists | tableFilter:festivalService.festivals:text:festivalService.mustSeeArtists:festivalService.options">
+      <td class="artist-column">{{ artist.name }}</td>
+      <td class="festivals-column">
+        <span *ngFor="let festival of artist | mapFestivals:festivalService.festivals; let l = last">
+          <a [routerLink]="getFestivalLink(festival)">{{ festival.name }}<span *ngIf="!l">,</span></a><span
+            *ngIf="!l">&nbsp;</span>
         </span>
       </td>
-      <td>
+      <td class="must-see-column">
         <button type="button" class="btn btn--primary" (click)="addToMustSee(artist)">Must-see</button>
       </td>
     </tr>
   </tbody>
 </table>
-<h2 *ngIf="(festivalService.artists | artistFilter:filterOptions).length < 1" style="text-align: center">None</h2>
+<h2
+  *ngIf="festivalService.artists.length > 0
+    && (festivalService.artists | tableFilter:festivalService.festivals:text:festivalService.mustSeeArtists:festivalService.options).length < 1"
+  style="text-align: center">No matches</h2>
+<h2 *ngIf="festivalService.artists.length === 0" style="text-align: center">None</h2>

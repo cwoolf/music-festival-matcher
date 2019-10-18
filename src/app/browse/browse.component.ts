@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FestivalService } from '../festival/festival.service';
+import { IFestival } from '../shared';
 
 @Component({
   selector: 'app-browse',
@@ -11,6 +12,10 @@ export class BrowseComponent implements OnInit {
   constructor(
     public festivalService: FestivalService,
   ) { }
+
+  getFestivalLink(festival: IFestival): string {
+    return `/festival/update/${encodeURIComponent(festival.name)}`;
+  }
 
   ngOnInit() {
     this.festivalService.getArtists();
